@@ -32,7 +32,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
         showDialog(
           context: context,
           builder: (context) {
-            return Text(ex.toString());
+            return AlertDialog(
+              content: Text(ex.toString()),
+            );
           },
         );
       }
@@ -40,7 +42,9 @@ class _RegisterScreenState extends State<RegisterScreen> {
       showDialog(
         context: context,
         builder: (context) {
-          return const Text("Passwords dont' match");
+          return const AlertDialog(
+            content: Text("Passwords dont' match"),
+          );
         },
       );
     }

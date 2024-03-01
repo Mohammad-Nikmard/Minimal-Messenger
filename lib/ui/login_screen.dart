@@ -32,7 +32,9 @@ class _LoginScreenState extends State<LoginScreen> {
       showDialog(
         context: context,
         builder: (context) {
-          return Text(ex.toString());
+          return AlertDialog(
+            content: Text(ex.toString()),
+          );
         },
       );
     }

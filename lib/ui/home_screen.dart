@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:minimal_messenger/auth/auth_service.dart';
+import 'package:minimal_messenger/widgets/my_drawer.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,14 +12,12 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const MyDrawer(),
       backgroundColor: Theme.of(context).colorScheme.background,
-      body: Center(
-        child: ElevatedButton(
-          onPressed: () async {
-            await AuthServices().signOut();
-          },
-          child: const Text("Signout"),
-        ),
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        title: Text("HOME"),
+        centerTitle: true,
       ),
     );
   }
