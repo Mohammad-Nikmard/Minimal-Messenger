@@ -14,11 +14,17 @@ class MyButton extends StatelessWidget {
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.secondary,
           borderRadius: const BorderRadius.all(
-            Radius.circular(8),
+            Radius.circular(10),
           ),
         ),
         child: Center(
-          child: Text(text),
+          child: Text(
+            text,
+            style: const TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
         ),
       ),
     );

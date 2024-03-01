@@ -1,15 +1,56 @@
 import 'package:flutter/material.dart';
+import 'package:minimal_messenger/auth/auth_service.dart';
 import 'package:minimal_messenger/widgets/my_button.dart';
 import 'package:minimal_messenger/widgets/my_textfield.dart';
 
-class RegisterScreen extends StatelessWidget {
-  const RegisterScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key, required this.callBack});
+  final VoidCallback callBack;
+
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
+  final user = AuthServices();
+  Future<void> signUp(
+      String email, String password, String passwordConfirm) async {
+    if (password == passwordConfirm) {
+      try {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          },
+        );
+        await user.signUp(email, password);
+        if (!mounted) return;
+        Navigator.pop(context);
+      } on Exception catch (ex) {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return Text(ex.toString());
+          },
+        );
+      }
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return const Text("Passwords dont' match");
+        },
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    var _emailController = TextEditingController();
-    var _passwordController = TextEditingController();
-    var _pwConfirmController = TextEditingController();
+    var emailController = TextEditingController();
+    var passwordController = TextEditingController();
+    var pwConfirmController = TextEditingController();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
@@ -38,7 +79,7 @@ class RegisterScreen extends StatelessWidget {
               MyTextField(
                 hint: "Email",
                 obsecure: false,
-                controller: _emailController,
+                controller: emailController,
               ),
               const SizedBox(
                 height: 10,
@@ -46,7 +87,7 @@ class RegisterScreen extends StatelessWidget {
               MyTextField(
                 hint: "Password",
                 obsecure: true,
-                controller: _passwordController,
+                controller: passwordController,
               ),
               const SizedBox(
                 height: 10,
@@ -54,19 +95,26 @@ class RegisterScreen extends StatelessWidget {
               MyTextField(
                 hint: "Confirm Password",
                 obsecure: true,
-                controller: _pwConfirmController,
+                controller: pwConfirmController,
               ),
               const SizedBox(
                 height: 25,
               ),
               MyButton(
                 text: "Register",
-                onTap: () {},
+                onTap: () async {
+                  await signUp(
+                    emailController.text.trim(),
+                    passwordController.text.trim(),
+                    pwConfirmController.text.trim(),
+                  );
+                },
               ),
               const SizedBox(
                 height: 25,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
                     "Already have an account? ",
@@ -74,11 +122,14 @@ class RegisterScreen extends StatelessWidget {
                       color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
-                  Text(
-                    "Login now",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
+                  GestureDetector(
+                    onTap: widget.callBack,
+                    child: Text(
+                      "Login now",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ),
                 ],

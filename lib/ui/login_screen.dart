@@ -1,19 +1,47 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:minimal_messenger/auth/auth_service.dart';
 import 'package:minimal_messenger/widgets/my_button.dart';
 import 'package:minimal_messenger/widgets/my_textfield.dart';
 
 class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+  const LoginScreen({super.key, required this.callBack});
+  final VoidCallback callBack;
 
   @override
   State<LoginScreen> createState() => _LoginScreenState();
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final user = FirebaseAuth.instance;
+
+  Future<void> signIn(String email, String password) async {
+    final user = AuthServices();
+    try {
+      showDialog(
+          context: context,
+          builder: (context) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          });
+      await user.signIn(email, password);
+      if (!mounted) return;
+      Navigator.pop(context);
+    } on Exception catch (ex) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return Text(ex.toString());
+        },
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    var _emailController = TextEditingController();
-    var _passwordController = TextEditingController();
+    var emailController = TextEditingController();
+    var passwordController = TextEditingController();
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.background,
       body: SafeArea(
@@ -42,7 +70,7 @@ class _LoginScreenState extends State<LoginScreen> {
               MyTextField(
                 hint: "Email",
                 obsecure: false,
-                controller: _emailController,
+                controller: emailController,
               ),
               const SizedBox(
                 height: 10,
@@ -50,31 +78,38 @@ class _LoginScreenState extends State<LoginScreen> {
               MyTextField(
                 hint: "Password",
                 obsecure: true,
-                controller: _passwordController,
+                controller: passwordController,
               ),
               const SizedBox(
                 height: 25,
               ),
               MyButton(
                 text: "Login",
-                onTap: () {},
+                onTap: () async {
+                  await signIn(emailController.text.trim(),
+                      passwordController.text.trim());
+                },
               ),
               const SizedBox(
                 height: 25,
               ),
               Row(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    "Not a member?",
+                    "Not a member? ",
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.primary,
                     ),
                   ),
-                  Text(
-                    "Register now",
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
+                  GestureDetector(
+                    onTap: widget.callBack,
+                    child: Text(
+                      "Register now",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ),
                 ],
