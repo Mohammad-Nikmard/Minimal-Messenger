@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "58745854775",
+    "project_id": "minimal-messenger",
+    "storage_bucket": "minimal-messenger.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:58745854775:android:e95a9806a8c9b21b5a98b2",
+        "android_client_info": {
+          "package_name": "com.example.minimal_messenger"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCcca3yGXuelLXO1vl3-ceoipJsBXn6tPU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
