@@ -8,7 +8,7 @@ import 'package:minimal_messenger/widgets/my_textfield.dart';
 final ChatService chatServices = ChatService();
 final AuthServices authService = AuthServices();
 
-class ChatScreen extends StatelessWidget {
+class ChatScreen extends StatefulWidget {
   const ChatScreen({
     super.key,
     required this.receiverEmail,
@@ -18,20 +18,63 @@ class ChatScreen extends StatelessWidget {
   final String receiverId;
 
   @override
-  Widget build(BuildContext context) {
-    final controller = TextEditingController();
+  State<ChatScreen> createState() => _ChatScreenState();
+}
 
-    void sendMessage() async {
-      if (controller.text.isNotEmpty) {
-        await chatServices.sendMessage(receiverId, controller.text);
+class _ChatScreenState extends State<ChatScreen> {
+  final controller = TextEditingController();
+  FocusNode myFocusNode = FocusNode();
+  final ScrollController scrollController = ScrollController();
 
-        controller.clear();
-      }
+  @override
+  void initState() {
+    super.initState();
+    myFocusNode.addListener(
+      () {
+        if (myFocusNode.hasFocus) {
+          Future.delayed(
+            const Duration(milliseconds: 500),
+            () => scrollDown(),
+          );
+        }
+      },
+    );
+
+    Future.delayed(
+      const Duration(milliseconds: 500),
+      () => scrollDown(),
+    );
+  }
+
+  @override
+  void dispose() {
+    myFocusNode.dispose();
+    super.dispose();
+  }
+
+  void scrollDown() {
+    scrollController.animateTo(
+      scrollController.position.maxScrollExtent,
+      duration: const Duration(seconds: 1),
+      curve: Curves.decelerate,
+    );
+  }
+
+  void sendMessage() async {
+    if (controller.text.isNotEmpty) {
+      await chatServices.sendMessage(widget.receiverId, controller.text);
+
+      controller.clear();
     }
 
+    scrollDown();
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(receiverEmail),
+        title: Text(widget.receiverEmail),
         centerTitle: true,
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.grey,
@@ -41,12 +84,38 @@ class ChatScreen extends StatelessWidget {
         children: [
           Expanded(
             child: MessageList(
-              receiverID: receiverId,
+              receiverID: widget.receiverId,
+              controller: scrollController,
             ),
           ),
-          UserInput(
-            controller: controller,
-            sendMessage: sendMessage,
+          Padding(
+            padding: const EdgeInsets.only(bottom: 30.0),
+            child: Row(
+              children: [
+                Expanded(
+                  child: MyTextField(
+                    hint: "Type a message",
+                    obsecure: false,
+                    controller: controller,
+                    focusNode: myFocusNode,
+                  ),
+                ),
+                Container(
+                  margin: const EdgeInsets.only(right: 20.0),
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.green,
+                  ),
+                  child: IconButton(
+                    onPressed: sendMessage,
+                    icon: const Icon(
+                      Icons.arrow_upward,
+                      color: Colors.white,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
@@ -55,8 +124,10 @@ class ChatScreen extends StatelessWidget {
 }
 
 class MessageList extends StatelessWidget {
-  const MessageList({super.key, required this.receiverID});
+  const MessageList(
+      {super.key, required this.receiverID, required this.controller});
   final String receiverID;
+  final ScrollController controller;
 
   @override
   Widget build(BuildContext context) {
@@ -71,6 +142,7 @@ class MessageList extends StatelessWidget {
           return const Text("Loading....");
         }
         return ListView(
+          controller: controller,
           children:
               snapshot.data!.docs.map((doc) => _buildMessageItem(doc)).toList(),
         );
@@ -95,45 +167,6 @@ class MessageList extends StatelessWidget {
           ChatBubble(
             isCurrentUser: isCurentUser,
             message: data["message"],
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class UserInput extends StatelessWidget {
-  const UserInput(
-      {super.key, required this.controller, required this.sendMessage});
-  final TextEditingController controller;
-  final void Function()? sendMessage;
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 30.0),
-      child: Row(
-        children: [
-          Expanded(
-            child: MyTextField(
-              hint: "Type a message",
-              obsecure: false,
-              controller: controller,
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.only(right: 20.0),
-            decoration: const BoxDecoration(
-              shape: BoxShape.circle,
-              color: Colors.green,
-            ),
-            child: IconButton(
-              onPressed: sendMessage,
-              icon: const Icon(
-                Icons.arrow_upward,
-                color: Colors.white,
-              ),
-            ),
           ),
         ],
       ),
