@@ -29,6 +29,7 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
       Navigator.pop(context);
     } on Exception catch (ex) {
+      Navigator.pop(context);
       showDialog(
         context: context,
         builder: (context) {

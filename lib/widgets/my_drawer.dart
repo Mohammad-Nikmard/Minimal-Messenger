@@ -14,14 +14,16 @@ class MyDrawer extends StatelessWidget {
         children: [
           Column(
             children: [
-              DrawerHeader(
-                child: Center(
-                  child: Icon(
-                    Icons.message,
-                    size: 40,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
+              SizedBox(
+                height: 80,
+              ),
+              Icon(
+                Icons.message,
+                size: 50,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              SizedBox(
+                height: 20,
               ),
               Padding(
                 padding: const EdgeInsets.only(left: 25.0),

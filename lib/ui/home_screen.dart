@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:minimal_messenger/services/auth/auth_service.dart';
 import 'package:minimal_messenger/services/chat/chat_services.dart';
 import 'package:minimal_messenger/ui/chat_screen.dart';
@@ -37,10 +38,38 @@ class BuildUserList extends StatelessWidget {
       stream: _chatService.getuserStream(),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return Text("Error");
+          return Center(
+            child: Text(
+              "Error",
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.primary,
+                fontSize: 20.0,
+              ),
+            ),
+          );
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return Text("Loading...");
+          return Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Loading",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 20,
+                  ),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                SpinKitWanderingCubes(
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 30.0,
+                ),
+              ],
+            ),
+          );
         }
         return ListView(
           children: snapshot.data!

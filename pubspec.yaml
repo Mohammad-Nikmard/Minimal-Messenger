@@ -18,6 +18,7 @@ dependencies:
   cloud_firestore: ^4.15.6
   firebase_auth: ^4.17.6
   provider: ^6.1.2
+  flutter_spinkit: ^5.2.0
   
 
 dev_dependencies:
