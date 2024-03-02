@@ -17,11 +17,13 @@ class HomeScreen extends StatelessWidget {
       drawer: const MyDrawer(),
       backgroundColor: Theme.of(context).colorScheme.background,
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.secondary,
-        title: Text("HOME"),
+        backgroundColor: Colors.transparent,
+        foregroundColor: Colors.grey,
+        elevation: 0,
+        title: const Text("HOME"),
         centerTitle: true,
       ),
-      body: BuildUserList(),
+      body: const BuildUserList(),
     );
   }
 }
@@ -68,6 +70,7 @@ class BuilduserStreamList extends StatelessWidget {
             MaterialPageRoute(
               builder: (context) => ChatScreen(
                 receiverEmail: userData["email"],
+                receiverId: userData["uid"],
               ),
             ),
           );
