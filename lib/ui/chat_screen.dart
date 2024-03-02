@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:minimal_messenger/services/auth/auth_service.dart';
 import 'package:minimal_messenger/services/chat/chat_services.dart';
 import 'package:minimal_messenger/widgets/chat_bubble.dart';
@@ -94,7 +95,7 @@ class _ChatScreenState extends State<ChatScreen> {
               children: [
                 Expanded(
                   child: MyTextField(
-                    hint: "Type a message",
+                    hint: "Type a message....",
                     obsecure: false,
                     controller: controller,
                     focusNode: myFocusNode,
@@ -136,10 +137,36 @@ class MessageList extends StatelessWidget {
       stream: chatServices.getMessage(receiverID, senderID),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
-          return const Text("Error");
+          return Text(
+            "Error",
+            style: TextStyle(
+              color: Theme.of(context).colorScheme.primary,
+              fontSize: 20,
+            ),
+          );
         }
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return const Text("Loading....");
+          return Center(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text(
+                  "Loading",
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 20,
+                  ),
+                ),
+                const SizedBox(
+                  width: 5,
+                ),
+                SpinKitWanderingCubes(
+                  color: Theme.of(context).colorScheme.primary,
+                  size: 30.0,
+                ),
+              ],
+            ),
+          );
         }
         return ListView(
           controller: controller,
@@ -153,10 +180,9 @@ class MessageList extends StatelessWidget {
   Widget _buildMessageItem(DocumentSnapshot doc) {
     Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
 
-    bool isCurentUser = data['senderID'] == authService.getCurrentuser()!.uid;
+    bool isCurentUser = data['senderId'] == authService.getCurrentuser()!.uid;
 
-    var alignment =
-        isCurentUser ? Alignment.centerRight : Alignment.centerRight;
+    var alignment = isCurentUser ? Alignment.centerRight : Alignment.centerLeft;
 
     return Container(
       alignment: alignment,
