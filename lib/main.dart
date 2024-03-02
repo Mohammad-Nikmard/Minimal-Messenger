@@ -1,7 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:minimal_messenger/auth/auth_page.dart';
+import 'package:minimal_messenger/services/auth/auth_page.dart';
 import 'package:minimal_messenger/theme/light_mode.dart';
 import 'package:minimal_messenger/ui/home_screen.dart';
 

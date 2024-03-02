@@ -1,6 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:minimal_messenger/auth/auth_service.dart';
+import 'package:minimal_messenger/services/auth/auth_service.dart';
 import 'package:minimal_messenger/widgets/my_button.dart';
 import 'package:minimal_messenger/widgets/my_textfield.dart';
 
