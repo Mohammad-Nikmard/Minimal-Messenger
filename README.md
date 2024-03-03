@@ -1,3 +1,3 @@
-# Minimal Messenger
+# Minimal Messenger 
+![mockup](assets/mockup.png)
 
-This section will be written as soon as the project ends....
