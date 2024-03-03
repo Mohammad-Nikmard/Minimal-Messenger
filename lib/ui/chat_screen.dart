@@ -182,20 +182,9 @@ class MessageList extends StatelessWidget {
 
     bool isCurentUser = data['senderId'] == authService.getCurrentuser()!.uid;
 
-    var alignment = isCurentUser ? Alignment.centerRight : Alignment.centerLeft;
-
-    return Container(
-      alignment: alignment,
-      child: Column(
-        crossAxisAlignment:
-            isCurentUser ? CrossAxisAlignment.end : CrossAxisAlignment.start,
-        children: [
-          ChatBubble(
-            isCurrentUser: isCurentUser,
-            message: data["message"],
-          ),
-        ],
-      ),
+    return ChatBubble(
+      isCurrentUser: isCurentUser,
+      message: data["message"],
     );
   }
 }

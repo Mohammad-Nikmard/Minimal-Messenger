@@ -19,6 +19,7 @@ dependencies:
   firebase_auth: ^4.17.6
   provider: ^6.1.2
   flutter_spinkit: ^5.2.0
+  chat_bubbles: ^1.6.0
   
 
 dev_dependencies:

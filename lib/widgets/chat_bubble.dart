@@ -1,3 +1,4 @@
+import 'package:chat_bubbles/bubbles/bubble_special_two.dart';
 import 'package:flutter/material.dart';
 import 'package:minimal_messenger/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
@@ -15,30 +16,23 @@ class ChatBubble extends StatelessWidget {
   Widget build(BuildContext context) {
     bool isDarkMode =
         Provider.of<ThemeProvider>(context, listen: false).isDarkMode;
-    return Container(
-      padding: const EdgeInsets.all(16),
-      margin: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 2.5),
-      decoration: BoxDecoration(
+    return BubbleSpecialTwo(
+      tail: true,
+      text: message,
+      isSender: isCurrentUser ? true : false,
+      color: isCurrentUser
+          ? isDarkMode
+              ? Colors.green.shade600
+              : Colors.green.shade500
+          : isDarkMode
+              ? Colors.grey.shade800
+              : Colors.grey.shade200,
+      textStyle: TextStyle(
         color: isCurrentUser
-            ? isDarkMode
-                ? Colors.green.shade600
-                : Colors.green.shade500
+            ? Colors.white
             : isDarkMode
-                ? Colors.grey.shade800
-                : Colors.grey.shade200,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(12),
-        ),
-      ),
-      child: Text(
-        message,
-        style: TextStyle(
-          color: isCurrentUser
-              ? Colors.white
-              : isDarkMode
-                  ? Colors.white
-                  : Colors.black,
-        ),
+                ? Colors.white
+                : Colors.black,
       ),
     );
   }
