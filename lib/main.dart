@@ -1,22 +1,24 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:minimal_messenger/services/auth/auth_page.dart';
-import 'package:minimal_messenger/theme/theme_provider.dart';
-import 'package:minimal_messenger/ui/home_screen.dart';
-import 'package:provider/provider.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:minimal_messenger/DI/service_locator.dart';
+import 'package:minimal_messenger/bloc/theme_bloc.dart';
+import 'package:minimal_messenger/bloc/theme_state.dart';
+import 'package:minimal_messenger/services/auth/auth_gate.dart';
+import 'package:minimal_messenger/theme/light_mode.dart';
 import 'firebase_options.dart';
 
 void main() async {
+  await initSerivceLocator();
+
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
   runApp(
-    ChangeNotifierProvider(
-      create: (context) => ThemeProvider(),
+    BlocProvider(
+      create: (context) => ThemeBloc(),
       child: const MyApp(),
     ),
   );
@@ -27,19 +29,21 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: Provider.of<ThemeProvider>(context).themeData,
-      home: StreamBuilder<User?>(
-        stream: FirebaseAuth.instance.authStateChanges(),
-        builder: (context, snapshot) {
-          if (snapshot.hasData) {
-            return const HomeScreen();
-          } else {
-            return const AuthPage();
-          }
-        },
-      ),
+    return BlocBuilder<ThemeBloc, ThemeState>(
+      builder: (context, state) {
+        if (state is ThemeInitState) {
+          return MaterialApp(
+            debugShowCheckedModeBanner: false,
+            theme: state.initTheme,
+            home: AuthGate(),
+          );
+        }
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          theme: lightMode,
+          home: AuthGate(),
+        );
+      },
     );
   }
 }

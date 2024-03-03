@@ -1,7 +1,6 @@
 import 'package:chat_bubbles/bubbles/bubble_special_two.dart';
 import 'package:flutter/material.dart';
-import 'package:minimal_messenger/theme/theme_provider.dart';
-import 'package:provider/provider.dart';
+import 'package:minimal_messenger/theme/theme_manager.dart';
 
 class ChatBubble extends StatelessWidget {
   const ChatBubble({
@@ -14,8 +13,7 @@ class ChatBubble extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    bool isDarkMode =
-        Provider.of<ThemeProvider>(context, listen: false).isDarkMode;
+    bool isDarkMode = ThemeManager.readTheme();
     return BubbleSpecialTwo(
       tail: true,
       text: message,
