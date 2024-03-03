@@ -1,13 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:minimal_messenger/DI/service_locator.dart';
 import 'package:minimal_messenger/services/auth/auth_service.dart';
 import 'package:minimal_messenger/services/chat/chat_services.dart';
 import 'package:minimal_messenger/widgets/chat_bubble.dart';
 import 'package:minimal_messenger/widgets/my_textfield.dart';
 
-final ChatService chatServices = ChatService();
-final AuthServices authService = AuthServices();
+final ChatService chatServices = locator.get();
+final AuthServices authService = locator.get();
 
 class ChatScreen extends StatefulWidget {
   const ChatScreen({

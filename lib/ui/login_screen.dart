@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:minimal_messenger/DI/service_locator.dart';
 import 'package:minimal_messenger/services/auth/auth_service.dart';
 import 'package:minimal_messenger/widgets/my_button.dart';
 import 'package:minimal_messenger/widgets/my_textfield.dart';
@@ -13,10 +14,10 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-  final user = FirebaseAuth.instance;
+  final FirebaseAuth user = locator.get();
 
   Future<void> signIn(String email, String password) async {
-    final user = AuthServices();
+    final authUser = AuthServices(locator.get(), locator.get());
     try {
       showDialog(
           context: context,
@@ -25,7 +26,7 @@ class _LoginScreenState extends State<LoginScreen> {
               child: CircularProgressIndicator(),
             );
           });
-      await user.signIn(email, password);
+      await authUser.signIn(email, password);
       if (!mounted) return;
       Navigator.pop(context);
     } on Exception catch (ex) {

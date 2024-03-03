@@ -2,8 +2,10 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthServices {
-  final FirebaseAuth user = FirebaseAuth.instance;
-  final FirebaseFirestore _database = FirebaseFirestore.instance;
+  final FirebaseAuth user;
+  final FirebaseFirestore _database;
+
+  AuthServices(this._database, this.user);
 
   User? getCurrentuser() {
     return user.currentUser;

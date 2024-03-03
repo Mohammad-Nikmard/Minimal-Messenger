@@ -3,8 +3,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:minimal_messenger/data/model/message.dart';
 
 class ChatService {
-  final FirebaseFirestore database = FirebaseFirestore.instance;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore database;
+  final FirebaseAuth _auth;
+
+  ChatService(this._auth, this.database);
 
   Stream<List<Map<String, dynamic>>> getuserStream() {
     return database.collection('Users').snapshots().map((snapshot) {

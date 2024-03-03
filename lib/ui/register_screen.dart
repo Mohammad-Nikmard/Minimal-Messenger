@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minimal_messenger/DI/service_locator.dart';
 import 'package:minimal_messenger/services/auth/auth_service.dart';
 import 'package:minimal_messenger/widgets/my_button.dart';
 import 'package:minimal_messenger/widgets/my_textfield.dart';
@@ -12,7 +13,7 @@ class RegisterScreen extends StatefulWidget {
 }
 
 class _RegisterScreenState extends State<RegisterScreen> {
-  final user = AuthServices();
+  final user = AuthServices(locator.get(), locator.get());
   Future<void> signUp(
       String email, String password, String passwordConfirm) async {
     if (password == passwordConfirm) {

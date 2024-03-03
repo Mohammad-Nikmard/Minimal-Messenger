@@ -9,13 +9,12 @@ import 'package:minimal_messenger/theme/light_mode.dart';
 import 'firebase_options.dart';
 
 void main() async {
-  await initSerivceLocator();
-
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform,
   );
+  await initSerivceLocator();
   runApp(
     BlocProvider(
       create: (context) => ThemeBloc(),

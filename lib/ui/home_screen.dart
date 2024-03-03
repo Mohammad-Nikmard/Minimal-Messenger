@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
+import 'package:minimal_messenger/DI/service_locator.dart';
 import 'package:minimal_messenger/services/auth/auth_service.dart';
 import 'package:minimal_messenger/services/chat/chat_services.dart';
 import 'package:minimal_messenger/ui/chat_screen.dart';
 import 'package:minimal_messenger/widgets/my_drawer.dart';
 import 'package:minimal_messenger/widgets/usertile.dart';
 
-final ChatService _chatService = ChatService();
-final AuthServices _authServices = AuthServices();
+final ChatService _chatService = locator.get();
+final AuthServices _authServices = locator.get();
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});

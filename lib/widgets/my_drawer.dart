@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:minimal_messenger/DI/service_locator.dart';
 import 'package:minimal_messenger/services/auth/auth_service.dart';
 import 'package:minimal_messenger/ui/settings_screen.dart';
 
@@ -69,7 +70,7 @@ class MyDrawer extends StatelessWidget {
                 color: Theme.of(context).colorScheme.primary,
               ),
               onTap: () async {
-                await AuthServices().signOut();
+                await AuthServices(locator.get(), locator.get()).signOut();
               },
             ),
           ),
