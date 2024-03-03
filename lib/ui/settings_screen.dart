@@ -13,7 +13,7 @@ class SettingsScreen extends StatefulWidget {
 }
 
 class _SettingsScreenState extends State<SettingsScreen> {
-  bool switchResult = false;
+  bool switchResult = ThemeManager.readTheme();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
